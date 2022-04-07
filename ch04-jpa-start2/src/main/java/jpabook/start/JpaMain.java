@@ -18,7 +18,11 @@ public class JpaMain {
 
         try {
             tx.begin(); //트랜잭션 시작
-            loicIdentity(em);  //비즈니스 로직
+//            loicIdentity(em);  //비즈니스 로직
+            testSave(em);
+            queryLogicJoin(em);
+            updateRelation(em);
+            deleteRelation(em);
             tx.commit();//트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,5 +63,42 @@ public class JpaMain {
 
         //삭제
         em.remove(member);
+    }
+
+    public static void testSave(EntityManager entityManager) {
+        Team team1 = new Team("team1", "팀1");
+        entityManager.persist(team1);
+
+        Member member1 = new Member("member1", "회원1");
+        member1.setTeam(team1);
+        entityManager.persist(member1);
+
+        Member member2 = new Member("member2", "회원2");
+        member2.setTeam(team1);
+        entityManager.persist(member2);
+    }
+
+    public static void queryLogicJoin(EntityManager entityManager) {
+        String jpql = "select m from Member m join m.team t where t.name =:teamName";
+        List<Member> list = entityManager.createQuery(jpql, Member.class)
+                .setParameter("teamName", "팀1")
+                .getResultList();
+
+        for(Member member : list) {
+            System.out.println("[query] member.username = " + member.getUsername());
+        }
+    }
+
+    public static void updateRelation(EntityManager entityManager) {
+        Team team2 = new Team("team2", "팀2");
+        entityManager.persist(team2);
+
+        Member member = entityManager.find(Member.class, "member1");
+        member.setTeam(team2);
+    }
+
+    public static void deleteRelation(EntityManager entityManager) {
+        Member member2 = entityManager.find(Member.class, "member2");
+        member2.setTeam(null);
     }
 }

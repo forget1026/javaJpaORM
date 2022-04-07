@@ -32,6 +32,18 @@ public class Member {
     @Lob
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public String getId() {
         return id;
     }
@@ -86,5 +98,13 @@ public class Member {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Member() {
+    }
+
+    public Member(String id, String username) {
+        this.id = id;
+        this.username = username;
     }
 }
