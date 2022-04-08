@@ -19,13 +19,13 @@ public class JpaMain {
         try {
             tx.begin(); //트랜잭션 시작
 //            loicIdentity(em);  //비즈니스 로직
-//            testSave(em);
+            testSave(em);
 //            queryLogicJoin(em);
 //            biDirection(em);
 //            updateRelation(em);
 //            deleteRelation(em);
 //            testSaveNonOwner(em);
-            testORM_양방향(em);
+//            testORM_양방향(em);
             tx.commit();//트랜잭션 커밋
 
         } catch (Exception e) {
@@ -70,16 +70,27 @@ public class JpaMain {
     }
 
     public static void testSave(EntityManager entityManager) {
-        Team team1 = new Team("team1", "팀1");
+//        Team team1 = new Team("team1", "팀1");
+//        entityManager.persist(team1);
+//
+//        Member member1 = new Member("member1", "회원1");
+//        member1.setTeam(team1);
+//        entityManager.persist(member1);
+//
+//        Member member2 = new Member("member2", "회원2");
+//        member2.setTeam(team1);
+//        entityManager.persist(member2);
+        Member member1 = new Member("member1");
+        Member member2 = new Member("member2");
+
+        Team team1 = new Team("team1");
+        team1.getMembers().add(member1);
+        team1.getMembers().add(member2);
+
+        entityManager.persist(member1);
+        entityManager.persist(member2);
         entityManager.persist(team1);
 
-        Member member1 = new Member("member1", "회원1");
-        member1.setTeam(team1);
-        entityManager.persist(member1);
-
-        Member member2 = new Member("member2", "회원2");
-        member2.setTeam(team1);
-        entityManager.persist(member2);
     }
 
     public static void queryLogicJoin(EntityManager entityManager) {
@@ -98,12 +109,12 @@ public class JpaMain {
         entityManager.persist(team2);
 
         Member member = entityManager.find(Member.class, "member1");
-        member.setTeam(team2);
+//        member.setTeam(team2);
     }
 
     public static void deleteRelation(EntityManager entityManager) {
         Member member2 = entityManager.find(Member.class, "member2");
-        member2.setTeam(null);
+//        member2.setTeam(null);
     }
 
     public static void biDirection(EntityManager entityManager) {
@@ -137,12 +148,12 @@ public class JpaMain {
 
         Member member1 = new Member("member1", "회원1");
 
-        member1.setTeam(team1);
+//        member1.setTeam(team1);
         entityManager.persist(member1);
 
         Member member2 = new Member("member2", "회원2");
 
-        member2.setTeam(team1);
+//        member2.setTeam(team1);
         entityManager.persist(member2);
     }
 }
