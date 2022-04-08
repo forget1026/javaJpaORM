@@ -32,22 +32,22 @@ public class Member {
     @Lob
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        if (this.team != null) {
-            this.team.getMembers().remove(this);
-        }
-
-        this.team = team;
-        team.getMembers().add(this);
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "TEAM_ID")
+//    private Team team;
+//
+//    public Team getTeam() {
+//        return team;
+//    }
+//
+//    public void setTeam(Team team) {
+//        if (this.team != null) {
+//            this.team.getMembers().remove(this);
+//        }
+//
+//        this.team = team;
+//        team.getMembers().add(this);
+//    }
 
     public String getId() {
         return id;
