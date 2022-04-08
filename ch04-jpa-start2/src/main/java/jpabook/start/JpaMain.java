@@ -19,11 +19,15 @@ public class JpaMain {
         try {
             tx.begin(); //트랜잭션 시작
 //            loicIdentity(em);  //비즈니스 로직
-            testSave(em);
-            queryLogicJoin(em);
-            updateRelation(em);
-            deleteRelation(em);
+//            testSave(em);
+//            queryLogicJoin(em);
+//            biDirection(em);
+//            updateRelation(em);
+//            deleteRelation(em);
+//            testSaveNonOwner(em);
+            testORM_양방향(em);
             tx.commit();//트랜잭션 커밋
+
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback(); //트랜잭션 롤백
@@ -100,5 +104,45 @@ public class JpaMain {
     public static void deleteRelation(EntityManager entityManager) {
         Member member2 = entityManager.find(Member.class, "member2");
         member2.setTeam(null);
+    }
+
+    public static void biDirection(EntityManager entityManager) {
+        Team team = entityManager.find(Team.class, "team1");
+        List<Member> list = team.getMembers();
+        for(Member member : list) {
+            System.out.println("member.username = " + member.getUsername());
+        }
+    }
+
+    public static void testSaveNonOwner(EntityManager entityManager) {
+        Member member1 = new Member("member1", "회원1");
+        entityManager.persist(member1);
+
+        Member member2 = new Member("member2", "회원2");
+        entityManager.persist(member2);
+
+        Team team = new Team("team1", "팀1");
+        entityManager.persist(team);
+
+        team.getMembers().add(member1);
+        team.getMembers().add(member2);
+
+        entityManager.persist(team);
+
+    }
+
+    public static void testORM_양방향(EntityManager entityManager) {
+        Team team1 = new Team("team1", "팀1");
+        entityManager.persist(team1);
+
+        Member member1 = new Member("member1", "회원1");
+
+        member1.setTeam(team1);
+        entityManager.persist(member1);
+
+        Member member2 = new Member("member2", "회원2");
+
+        member2.setTeam(team1);
+        entityManager.persist(member2);
     }
 }

@@ -17,7 +17,6 @@ public class Item {
     private int price;          //가격
     private int stockQuantity;  //재고수량
 
-
     //Getter, Setter
     public Long getId() {
         return id;
