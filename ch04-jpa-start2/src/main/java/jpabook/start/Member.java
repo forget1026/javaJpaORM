@@ -1,54 +1,23 @@
 package jpabook.start;
 
 import javax.persistence.*;  //**
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "MEMBER")
-//        uniqueConstraints = {@UniqueConstraint(
-//        name = "NAME_AGE_UNIQUE", columnNames = {"NAME", "AGE"})})
 public class Member {
-    @Id
-    @Column(name =  "ID")
+    @Id @Column(name = "MEMBER_ID")
     private String id;
 
-//    @Column(name = "NAME", nullable = false, length = 10)
-    @Column(name = "NAME")
     private String username;
 
-    private Integer age;
-
-    @Column(name = "role_type")
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
-
-    @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-
-    @Column(name = "last_modified_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
-
-    @Lob
-    private String description;
-
-//    @ManyToOne
-//    @JoinColumn(name = "TEAM_ID")
-//    private Team team;
-//
-//    public Team getTeam() {
-//        return team;
-//    }
-//
-//    public void setTeam(Team team) {
-//        if (this.team != null) {
-//            this.team.getMembers().remove(this);
-//        }
-//
-//        this.team = team;
-//        team.getMembers().add(this);
-//    }
+    @ManyToMany
+    @JoinTable(name = "MEMBER_PRODUCT",
+            joinColumns = @JoinColumn(name = "MEMBER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID")
+    )
+    private List<Product> products = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -66,55 +35,11 @@ public class Member {
         this.username = username;
     }
 
-    public Integer getAge() {
-        return age;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public RoleType getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(RoleType roleType) {
-        this.roleType = roleType;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Member() {
-    }
-
-    public Member(String id) {
-        this.id = id;
-    }
-
-    public Member(String id, String username) {
-        this.id = id;
-        this.username = username;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
