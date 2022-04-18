@@ -18,7 +18,6 @@ public class JpaMain {
         try {
             tx.begin();
             save(em);
-//            tx.commit();//트랜잭션 커밋
             find(em);
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,15 +41,26 @@ public class JpaMain {
         member1.getProducts().add(productA);
         entityManager.persist(member1);
 
-        entityManager.flush();
-        entityManager.detach(member1);
+        MemberProduct memberProduct = new MemberProduct();
+        memberProduct.setMember(member1);
+        memberProduct.setProduct(productA);
+        memberProduct.setOrderAmount(2);
+
+        entityManager.persist(memberProduct);
     }
 
     public static void find(EntityManager entityManager) {
-        Member member = entityManager.find(Member.class, "member1");
-        List<Product> products = member.getProducts();
-        for (Product product : products) {
-            System.out.println("product.name : " + product.getName());
-        }
+        MemberProductId memberProductId = new MemberProductId();
+        memberProductId.setMember("member1");
+        memberProductId.setProduct("productA");
+
+        MemberProduct memberProduct = entityManager.find(MemberProduct.class, memberProductId);
+
+        Member member = memberProduct.getMember();
+        Product product = memberProduct.getProduct();
+
+        System.out.println("member = " + member.getUsername());
+        System.out.println("product = " + product.getName());
+        System.out.println("orderAmount = " + memberProduct.getOrderAmount());
     }
 }
